@@ -65,6 +65,32 @@ if (window.location.hash) {
   if (targetBtn) targetBtn.click();
 }
 
+// SERVICE ACCORDIONS (one open per group; click to toggle)
+function initServiceAccordions() {
+  document.querySelectorAll('.service-accordion-wrap').forEach((wrap) => {
+    wrap.querySelectorAll('.service-accordion-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const panelId = btn.getAttribute('aria-controls');
+        const panel = panelId ? document.getElementById(panelId) : null;
+        const wasOpen = btn.getAttribute('aria-expanded') === 'true';
+
+        wrap.querySelectorAll('.service-accordion-btn').forEach((b) => {
+          b.setAttribute('aria-expanded', 'false');
+          const p = document.getElementById(b.getAttribute('aria-controls'));
+          if (p) p.classList.remove('is-open');
+        });
+
+        if (!wasOpen && panel) {
+          btn.setAttribute('aria-expanded', 'true');
+          panel.classList.add('is-open');
+        }
+      });
+    });
+  });
+}
+
+initServiceAccordions();
+
 // GALLERY FILTERS
 const filterBtns = document.querySelectorAll('.filter-btn');
 const galleryItems = document.querySelectorAll('.gallery-item');
